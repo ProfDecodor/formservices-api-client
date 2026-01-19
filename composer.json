@@ -1,0 +1,49 @@
+{
+    "name": "profdecodor/formservices-api-client",
+    "description": "Client API pour les services de formulaires JWay",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Julian Davreux",
+            "email": "julian@beuli.be"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "illuminate/support": "^11.0|^12.0",
+        "illuminate/http": "^11.0|^12.0",
+        "guzzlehttp/guzzle": "^7.8"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^9.0|^10.0",
+        "phpunit/phpunit": "^10.5|^11.0",
+        "mockery/mockery": "^1.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "Jway\\FormServicesApiClient\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Jway\\FormServicesApiClient\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Jway\\FormServicesApiClient\\FormServicesApiClientServiceProvider"
+            ],
+            "aliases": {
+                "FormServicesClient": "Jway\\FormServicesApiClient\\Facades\\FormServicesClient"
+            }
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
