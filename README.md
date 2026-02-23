@@ -41,7 +41,7 @@ Add the repository to your `composer.json`:
         }
     ],
     "require": {
-        "profdecodor/formservices-api-client": "^1.0"
+        "profdecodor/formservices-api-client": "dev-main"
     }
 }
 ```
