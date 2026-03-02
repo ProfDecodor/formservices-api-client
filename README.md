@@ -11,6 +11,14 @@
 
 A Laravel package for interacting with the JWay FormServices API. Supports multi-client configuration and API versioning.
 
+## Demo Application
+
+A companion Laravel application is available to explore the package features interactively against a live FormServices API instance:
+
+**[profdecodor/formservices-api-demo](https://github.com/profdecodor/formservices-api-demo)**
+
+It covers all major resources (Applications, Files, Auth, …), displays the exact PHP code used for each API call, and serves as a practical test bed for the package.
+
 ## Features
 
 - **Multi-client support** - Configure multiple API clients for different environments (dev, staging, prod)
