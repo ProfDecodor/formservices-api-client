@@ -369,8 +369,11 @@ $list = $documents->findAll([
 ```php
 $contents = $api->contents();
 
-// List contents by type
-$all = $contents->findAll('PROJECT');  // PROJECT, MODULE, FORM, WORKFLOW
+// List all contents (all types)
+$all = $contents->findAll();
+
+// List contents filtered by type
+$all = $contents->findAll('PROJECT');  // PROJECT, MODULE, FORM, WORKFLOW, LIBRARY
 
 // Find content
 $content = $contents->find(123);
@@ -436,23 +439,44 @@ $subContents->delete(123, 'link-id');
 
 ### Studio - Projects
 
+Projects are Studio contents of type PROJECT. The `projects()` resource handles
+the build and deployment lifecycle. All operations require a **contentId** — use
+`findAll()` to retrieve the list and their contentId values.
+
+> **`id` vs `contentId`**: project records contain both fields. Only `contentId`
+> is accepted by the build endpoints. Always use `contentId` for project operations.
+
 ```php
 $projects = $api->projects();
 
-// Prepare for build
-$projects->prepareForBuild(123);
+// List all projects (Studio contents of type PROJECT)
+$list = $projects->findAll();
+// Returns: [['id' => 1, 'contentId' => 42, 'name' => 'MyProject', 'version' => '1.2.0', ...], ...]
 
-// Deploy
-$projects->deploy(123);
+// Filter by name
+$filtered = $projects->findAll(name: 'MyProject');
 
-// Test
-$projects->test(123);
+// Retrieve build information for a project (use contentId, not id)
+$build = $projects->findBuild(42);
 
-// Get build info
-$build = $projects->findBuild(123);
+// Typical deploy sequence:
+$projects->prepareForBuild(42); // 1. Write content to server filesystem
+$projects->deploy(42);          // 2. Package and deploy the WAR file
+$url = $projects->test(42);     // 3. Get the URL of the deployed form
 
-// Update build
-$projects->updateBuild(123, ['status' => 'SUCCESS']);
+// Update build metadata
+$projects->updateBuild(42, ['key' => 'value']);
+```
+
+> **Equivalence with `contents()`**: `projects()->findAll()` is strictly equivalent
+> to `contents()->findAll('PROJECT')`. Both calls hit the same endpoint. Use
+> `projects()->findAll()` when your code is specifically about project lifecycle;
+> use `contents()->findAll('PROJECT')` when working generically with content types.
+
+```php
+// These two calls are equivalent:
+$api->projects()->findAll();
+$api->contents()->findAll('PROJECT');
 ```
 
 ## Pagination

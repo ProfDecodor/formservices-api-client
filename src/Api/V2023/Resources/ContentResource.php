@@ -14,13 +14,25 @@ class ContentResource
     }
 
     /**
-     * Find all contents.
+     * Find all Studio contents, optionally filtered by type.
+     *
+     * Known content types: PROJECT, MODULE, FORM, WORKFLOW, LIBRARY.
+     * When $type is omitted, the API returns all content types.
+     *
+     * Note: to list projects specifically, prefer using projects()->findAll()
+     * which is self-documenting and always scopes to type PROJECT.
+     *
+     * @param  string|null  $type   Content type filter (PROJECT, FORM, MODULE, WORKFLOW…).
+     *                              Pass null to retrieve all types.
+     * @param  string|null  $name   Partial name filter.
+     * @param  string|null  $query  Additional free-text query filter.
+     * @return array<int, array<string, mixed>>
      */
-    public function findAll(string $type, ?string $name = null, ?string $query = null): array
+    public function findAll(?string $type = null, ?string $name = null, ?string $query = null): array
     {
         return $this->client->get('rest/content', [
-            'type' => $type,
-            'name' => $name,
+            'type'  => $type,
+            'name'  => $name,
             'query' => $query,
         ]);
     }

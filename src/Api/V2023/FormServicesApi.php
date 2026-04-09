@@ -88,7 +88,14 @@ class FormServicesApi implements ApiClientInterface
     }
 
     /**
-     * Access Content services (Studio).
+     * Access Studio content management services.
+     *
+     * Covers all content types: PROJECT, MODULE, FORM, WORKFLOW, LIBRARY, etc.
+     * Also exposes sub-resources: accesses(), files(), repositories(),
+     * translations(), subContents().
+     *
+     * To list projects specifically, consider using projects()->findAll()
+     * which is more self-documenting than contents()->findAll('PROJECT').
      */
     public function contents(): ContentResource
     {
@@ -96,7 +103,19 @@ class FormServicesApi implements ApiClientInterface
     }
 
     /**
-     * Access Project services (Studio).
+     * Access Studio project build and deployment services.
+     *
+     * Projects are Studio contents of type PROJECT. This resource covers
+     * build lifecycle operations: findAll, findBuild, prepareForBuild,
+     * deploy, updateBuild, test.
+     *
+     * Typical deploy sequence:
+     *   $api->projects()->prepareForBuild($contentId);
+     *   $api->projects()->deploy($contentId);
+     *   $api->projects()->test($contentId);
+     *
+     * Note: all methods require the contentId from the project record,
+     * not the legacy id field. Use findAll() to retrieve contentId values.
      */
     public function projects(): ProjectResource
     {

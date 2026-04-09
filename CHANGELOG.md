@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- `ProjectResource::findAll(?string $name, ?string $query)` — list all Studio projects
+  (convenience wrapper around `contents()->findAll('PROJECT')`; prefer this when intent
+  is specifically about projects, as it is more self-documenting)
+
+### Changed
+- `ContentResource::findAll()` — `$type` parameter is now optional (`?string $type = null`).
+  Existing calls with an explicit type (`findAll('PROJECT')`, `findAll('FORM')`, …) are
+  fully backward-compatible. Omitting `$type` now returns all content types.
+  **Migration:** no action required — existing code continues to work unchanged.
+
+### Documentation
+- Added full PHPDoc to all `ProjectResource` methods, including the `contentId` vs `id`
+  distinction and the recommended deploy sequence (prepareForBuild → deploy → test).
+- Updated `FormServicesApi` accessor docblocks to clarify the relationship between
+  `contents()` and `projects()` for Studio work.
+
 ## [1.0.0] - 2024-01-19
 
 ### Added
