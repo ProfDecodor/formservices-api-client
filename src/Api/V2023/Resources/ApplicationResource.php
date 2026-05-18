@@ -2,7 +2,9 @@
 
 namespace Jway\FormServicesApiClient\Api\V2023\Resources;
 
+use Exception;
 use Jway\FormServicesApiClient\FormServicesClient;
+use Log;
 
 class ApplicationResource
 {
@@ -18,7 +20,14 @@ class ApplicationResource
      */
     public function findAll(): array
     {
+        try {
         return $this->client->get('rest/application');
+        } catch (Exception $e) {
+
+            Log::error("API Error: " . $e->getMessage());
+
+            throw new FormServicesApiException("Impossible de récupérer les applications.");
+        }
     }
 
     /**
@@ -34,16 +43,12 @@ class ApplicationResource
      */
     public function findByTag(string $tagName): array
     {
-        $applications = $this->findAll();
+        $applications = $this->findAll() ?? [];
 
-        return array_filter($applications, function($app) use ($tagName) {
-            foreach ($app['tags'] ?? [] as $tag) {
-                if ($tag['name'] === $tagName) {
-                    return true;
-                }
-            }
-            return false;
-        });
+        return array_values(array_filter($applications, function($app) use ($tagName) {
+            // Utilisation de collect pour plus de sûreté sur les clés manquantes
+            return collect($app['tags'] ?? [])->contains('name', $tagName);
+        }));
     }
 
     /**

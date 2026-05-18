@@ -122,6 +122,7 @@ class FormServicesClient
         try {
             $response = $this->client->get($endpoint, [
                 'query' => $params,
+                'headers' => ['Accept' => 'application/xml, text/xml, */*'],
             ]);
 
             return $response->getBody()->getContents();
